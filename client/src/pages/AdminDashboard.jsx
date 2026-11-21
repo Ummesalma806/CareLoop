@@ -22,7 +22,7 @@ function CountUp({ value, decimals = 0 }) {
 function StatCard({ icon: Icon, label, value, decimals = 0, suffix = '', danger }) {
   return (
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="card">
-      <div className="flex items-center justify-between text-sm text-stone-500">{label}<Icon size={18} className={danger ? 'text-red-500' : 'text-brand'} /></div>
+      <div className="flex items-center justify-between text-sm font-medium text-stone-500">{label}<span className={`flex h-9 w-9 items-center justify-center rounded-xl ${danger ? 'bg-red-50 text-red-500' : 'bg-brand/10 text-brand'}`}><Icon size={18} /></span></div>
       <div className={`mt-2 text-3xl font-bold ${danger ? 'text-red-600' : ''}`}>
         {value == null ? '–' : <><CountUp value={value} decimals={decimals} />{suffix}</>}
       </div>
@@ -49,8 +49,8 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="text-stone-500">{scope}</p>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Dashboard</h1>
+        <p className="mt-1 text-stone-500">{scope}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

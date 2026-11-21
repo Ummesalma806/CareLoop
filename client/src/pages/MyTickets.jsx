@@ -4,6 +4,7 @@ import { Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api, { errMsg } from '../lib/api.js';
 import TicketList from '../components/TicketList.jsx';
+import PageHeader from '../components/PageHeader.jsx';
 
 export default function MyTickets() {
   const [tickets, setTickets] = useState([]);
@@ -15,11 +16,10 @@ export default function MyTickets() {
 
   return (
     <div>
-      <div className="mb-5 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">My tickets</h1>
+      <PageHeader title="My tickets" subtitle="Everything you have raised with your branch">
         <Link to="/tickets/new" className="btn-primary"><Plus size={18} /> New ticket</Link>
-      </div>
-      <TicketList tickets={tickets} loading={loading} />
+      </PageHeader>
+      <TicketList tickets={tickets} loading={loading} empty="You have not raised any tickets yet. Click “New ticket” to get help from your branch." />
     </div>
   );
 }
