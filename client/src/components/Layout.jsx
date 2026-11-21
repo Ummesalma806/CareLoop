@@ -6,7 +6,7 @@ import Logo from './Logo.jsx';
 const NAV = {
   customer: [['/tickets', 'My tickets'], ['/tickets/new', 'New ticket'], ['/knowledge', 'Help center']],
   agent: [['/queue', 'Ticket queue'], ['/knowledge', 'Help center']],
-  admin: [['/queue', 'Ticket queue'], ['/knowledge', 'Help center']],
+  admin: [['/admin', 'Dashboard'], ['/queue', 'Ticket queue'], ['/knowledge', 'Help center']],
 };
 
 export default function Layout() {

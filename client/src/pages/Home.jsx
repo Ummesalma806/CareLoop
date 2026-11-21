@@ -4,5 +4,5 @@ import { useAuth } from '../context/AuthContext.jsx';
 // Sends each role to its own starting page
 export default function Home() {
   const { user } = useAuth();
-  return <Navigate to={user.role === 'customer' ? '/tickets' : '/queue'} replace />;
+  return <Navigate to={user.role === 'customer' ? '/tickets' : user.role === 'admin' ? '/admin' : '/queue'} replace />;
 }

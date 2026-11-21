@@ -8,6 +8,7 @@ import NewTicket from './pages/NewTicket.jsx';
 import TicketDetail from './pages/TicketDetail.jsx';
 import Queue from './pages/Queue.jsx';
 import Knowledge from './pages/Knowledge.jsx';
+import AdminDashboard from './pages/AdminDashboard.jsx';
 import Layout from './components/Layout.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/tickets/new" element={<ProtectedRoute roles={['customer']}><NewTicket /></ProtectedRoute>} />
           <Route path="/tickets/:id" element={<TicketDetail />} />
           <Route path="/queue" element={<ProtectedRoute roles={['agent', 'admin']}><Queue /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute roles={['admin']}><AdminDashboard /></ProtectedRoute>} />
           <Route path="/knowledge" element={<Knowledge />} />
         </Route>
 
