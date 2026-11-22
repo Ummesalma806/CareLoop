@@ -27,7 +27,11 @@ export default function TicketList({ tickets, loading, showCustomer, empty = 'No
           <Link to={`/tickets/${t._id}`} className={`card block border-l-4 !py-4 transition duration-200 hover:-translate-y-0.5 hover:shadow-lg ${STRIP[t.priority]}`}>
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="font-mono text-xs font-semibold text-stone-400">{t.key}</span>
-              <div className="flex items-center gap-2"><SlaBadge ticket={t} /><StatusBadge status={t.status} /></div>
+              <div className="flex items-center gap-2">
+                <SlaBadge ticket={t} />
+                {!showCustomer && t.status === 'resolved' && !t.isRated && <span className="rounded-full bg-brand-coral/10 px-2.5 py-0.5 text-xs font-semibold text-brand-coral ring-1 ring-inset ring-brand-coral/30">Rate now</span>}
+                <StatusBadge status={t.status} />
+              </div>
             </div>
             <h3 className="mt-1 text-[15px] font-semibold">{t.subject}</h3>
             <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-stone-500">
