@@ -1,3 +1,4 @@
+import { withAttachments } from '../middleware/upload.js';
 import { Router } from 'express';
 import { createTicket, getMyTickets, getTickets, getTicket } from '../controllers/ticketController.js';
 import { assignTicket, updateStatus, addComment, getComments, rateTicket } from '../controllers/ticketActions.js';
@@ -6,7 +7,8 @@ import { protect, authorize } from '../middleware/auth.js';
 const router = Router();
 router.use(protect); // every ticket route needs login
 
-router.post('/', authorize('customer'), createTicket);
+router.post('/', authorize('customer'), withAttachments, createTicket);
+router.post('/:id/comments', withAttachments, addComment);
 router.get('/me', authorize('customer'), getMyTickets);
 router.get('/', authorize('agent', 'admin'), getTickets);
 

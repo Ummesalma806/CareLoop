@@ -5,6 +5,7 @@ import { Lightbulb } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api, { errMsg } from '../lib/api.js';
 import { SLA_HOURS } from '../lib/format.js';
+import { FilePicker } from '../components/Attachments.jsx';
 
 const PRIORITIES = ['low', 'medium', 'high', 'urgent'];
 
@@ -14,6 +15,7 @@ export default function NewTicket() {
   const [form, setForm] = useState({ subject: '', description: '', category: '', priority: 'medium' });
   const [suggestions, setSuggestions] = useState([]);
   const [busy, setBusy] = useState(false);
+  const [files, setFiles] = useState([]);
 
   useEffect(() => { api.get('/categories').then((r) => setCategories(r.data)); }, []);
 
@@ -33,9 +35,10 @@ export default function NewTicket() {
     e.preventDefault();
     setBusy(true);
     try {
-      const { data } = await api.post('/tickets', form);
-      toast.success(`Ticket ${data.key} created`);
-      navigate(`/tickets/${data._id}`);
+     const fd = new FormData();
+Object.entries(form).forEach(([k, v]) => fd.append(k, v));
+files.forEach((f) => fd.append('attachments', f));
+const { data } = await api.post('/tickets', fd);
     } catch (err) {
       toast.error(errMsg(err));
     } finally {
@@ -85,6 +88,8 @@ export default function NewTicket() {
             ))}
           </div>
         </div>
+
+<FilePicker files={files} setFiles={setFiles} />
 
         <button className="btn-primary w-full" disabled={busy}>{busy ? 'Submitting…' : 'Submit ticket'}</button>
       </form>

@@ -9,6 +9,7 @@ import { StatusBadge, PriorityBadge, SlaBadge } from '../components/Badges.jsx';
 import Timeline from '../components/Timeline.jsx';
 import Stars from '../components/Stars.jsx';
 import { fmt } from '../lib/format.js';
+import { FilePicker, AttachmentList } from '../components/Attachments.jsx';
 
 export default function TicketDetail() {
   const { id } = useParams();
@@ -23,6 +24,7 @@ export default function TicketDetail() {
   const [agents, setAgents] = useState([]);
   const [pickAgent, setPickAgent] = useState('');
   const [busy, setBusy] = useState(false);
+  const [files, setFiles] = useState([]);
 
   const load = useCallback(async () => {
     try {
@@ -64,7 +66,14 @@ export default function TicketDetail() {
   const sendReply = (e) => {
     e.preventDefault();
     if (!reply.trim()) return;
-    act(async () => { await api.post(`/tickets/${id}/comments`, { body: reply, isInternal: internal }); setReply(''); setInternal(false); });
+   act(async () => {
+  const fd = new FormData();
+  fd.append('body', reply);
+  fd.append('isInternal', internal);
+  files.forEach((f) => fd.append('attachments', f));
+  await api.post(`/tickets/${id}/comments`, fd);
+  setReply(''); setInternal(false); setFiles([]);
+});
   };
   const setStatus = (status, msg) => act(() => api.patch(`/tickets/${id}/status`, { status }), msg);
   const submitRating = () => {
@@ -92,6 +101,7 @@ export default function TicketDetail() {
               <span>Opened {fmt(ticket.createdAt)}</span>
             </div>
             <p className="mt-4 whitespace-pre-line text-stone-700">{ticket.description}</p>
+            <AttachmentList items={ticket.attachments} />
             {isStaff && <p className="mt-3 text-xs text-stone-500">Customer: {ticket.customer?.name} ({ticket.customer?.email})</p>}
           </div>
 

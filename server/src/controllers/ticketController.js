@@ -30,6 +30,7 @@ export const createTicket = asyncHandler(async (req, res) => {
     customer: req.user._id,
     branch: req.user.branch,
     sla: { dueAt: calcDueAt(data.priority) },
+        attachments: req.uploaded || [],
   });
   ticket.log('created', req.user._id, { to: 'open' });
   await ticket.save();

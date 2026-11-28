@@ -74,9 +74,9 @@ export const addComment = asyncHandler(async (req, res) => {
   if (ticket.status === 'closed') throw new ApiError(400, 'Ticket is closed');
 
   const internal = req.user.role === 'customer' ? false : !!isInternal; // customers can never write internal notes
-  const comment = await TicketComment.create({ ticket: ticket._id, author: req.user._id, body, isInternal: internal });
-
-  if (req.user.role !== 'customer' && !internal && !ticket.sla.firstResponseAt) ticket.sla.firstResponseAt = new Date();
+const comment = await TicketComment.create({ ticket: ticket._id, author: req.user._id, body, isInternal: internal, attachments: req.uploaded || [] });
+ 
+if (req.user.role !== 'customer' && !internal && !ticket.sla.firstResponseAt) ticket.sla.firstResponseAt = new Date();
   ticket.log('comment_added', req.user._id, { note: internal ? 'internal note' : 'reply' });
   await ticket.save();
 
